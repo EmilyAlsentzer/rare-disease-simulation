@@ -5,6 +5,12 @@
 
 
 ## Installation
+Follow the below steps to install this repository. The installation process should take no longer than a few minutes.
+
+```
+git clone https://github.com/EmilyAlsentzer/rare-disease-simulation
+
+```
 
 ## Example Usage
 
