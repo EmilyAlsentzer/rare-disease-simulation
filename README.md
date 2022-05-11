@@ -35,7 +35,7 @@ pip install -e .
 Before you run any code in the repository, you will need to (1) download the required data and (2) specify the path to the project directory.
 
 ### Download Data
-
+First, download the data from Harvard Dataverse
 
 ### Setting up config file
 Go to `config.py` and set the project directory (`PROJECT_ROOT`) to be the path to the data folder downloaded in the previous step. 
@@ -44,7 +44,7 @@ Go to `config.py` and set the project directory (`PROJECT_ROOT`) to be the path 
 
 ## Example Usage
 
-### Simulating Patients
+### :boom: Simulating Patients
 To run the simulation pipeline with default parameters, run the following code. This will run the simulation pipeline and output the simulation patients to a jsonl file in the directory specified by `config.SIMULATED_DATA_PATH`.
 
 ```
