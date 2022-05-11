@@ -20,6 +20,8 @@ Alternatively, to install via pip, run:
 pip install -r requirements.txt
 ```
 
+
+
 ## Installation
 After the conda environment is created and activated, install the github repo with the following:
 
@@ -38,6 +40,8 @@ Before you run any code in the repository, you will need to (1) download the req
 ### Setting up config file
 Go to `config.py` and set the project directory (`PROJECT_ROOT`) to be the path to the data folder downloaded in the previous step. 
 
+
+
 ## Example Usage
 
 ### Simulating Patients
@@ -49,6 +53,8 @@ python simulate_patients.py
 ```
 
 The parameters of the simulation pipeline and their associated descriptions can be found in the `config.py` file. Adjusting these parameters will change the simulated patients output from the `simulate_patients.py` script.
+
+
 
 ## License
 This project is covered under the MIT License.
