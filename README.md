@@ -44,7 +44,7 @@ Go to `config.py` and set the project directory (`PROJECT_ROOT`) to be the path 
 
 ## Example Usage
 
-### :boom: Simulating Patients
+### :point_right: Simulating Realistic Rare Disease Patients
 To run the simulation pipeline with default parameters, run the following code. This will run the simulation pipeline and output the simulation patients to a jsonl file in the directory specified by `config.SIMULATED_DATA_PATH`.
 
 ```
@@ -52,7 +52,7 @@ cd simulate_patients
 python simulate_patients.py
 ```
 
-The parameters of the simulation pipeline and their associated descriptions can be found in the `config.py` file. Adjusting these parameters will change the simulated patients output from the `simulate_patients.py` script.
+The parameters of the simulation pipeline and their associated descriptions can be found in the `config.py` file. Modify these parameters to change the number of patients produced, the frequency of sampling each distractor gene module, etc.
 
 
 
