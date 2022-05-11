@@ -1,9 +1,9 @@
 # Simulation of undiagnosed patients with novel genetic conditions
 
-[![GitHub stars](https://badgen.net/github/stars/Naereen/Strapdown.js)](https://GitHub.com/Naereen/StrapDown.js/stargazers/)
-[![GitHub forks](https://badgen.net/github/forks/Naereen/Strapdown.js/)](https://GitHub.com/Naereen/StrapDown.js/network/)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
- [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub Repo stars](https://img.shields.io/github/stars/EmilyAlsentzer/rare-disease-simulation)](https://github.com/EmilyAlsentzer/rare-disease-simulation/stargazers)
+[![GitHub Repo forks](https://img.shields.io/github/forks/EmilyAlsentzer/rare-disease-simulation)](https://github.com/EmilyAlsentzer/rare-disease-simulation/network/members)
+ [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 ## Overview
 
