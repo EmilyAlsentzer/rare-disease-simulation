@@ -12,7 +12,7 @@ We present a computational pipeline to simulate realistic undiagnosed rare disea
 - :sparkles:  **Realistic simulation of patient phenotypes and candidate genes:** We provide a taxonomy of categories of “distractor” genes that do not cause the patient’s presenting syndrome yet would be considered plausible candidates during the clinical process. We then introduce a simulation framework that jointly samples genes and phenotypes according to these categories to simulate nontrivial and realistic patients. 
 
 <p align="center">
-<img src="https://github.com/EmilyAlsentzer/rare-disease-simulation/blob/main/img/figure2_simulation-process.png?raw=true" width="750" >
+<img src="https://github.com/EmilyAlsentzer/rare-disease-simulation/blob/main/img/figure2_simulation-process.png?raw=true" width="600" >
 </p>
 
 
@@ -20,7 +20,7 @@ We present a computational pipeline to simulate realistic undiagnosed rare disea
 - :sparkles: **Modelling novel genetic conditions:** To simulate patients with novel genetic conditions, we curate a knowledge graph (KG) of known gene–disease and gene–phenotype annotations that is time-stamped to 2015. This enables us to define post-2015 medical genetics discoveries as novel with respect to our KG. We manually time-stamp each disease and disease–gene association according to the date of the Pubmed article that reported the discovery and use these time-stamps to annotate each patient according to each of the disease-gene novelty categories below. 
 
 <p align="center">
- <img src="https://github.com/EmilyAlsentzer/rare-disease-simulation/blob/main/img/figure1_diagnosis-process.png?raw=true" width="750" >
+ <img src="https://github.com/EmilyAlsentzer/rare-disease-simulation/blob/main/img/figure1_diagnosis-process.png?raw=true" width="600" >
 </p>
 
 
