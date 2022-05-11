@@ -11,7 +11,7 @@ We present a computational pipeline to simulate realistic undiagnosed rare disea
 ### Pipeline Featues
 - :sparkles:  **Realistic simulation of patient phenotypes and candidate genes:** We provide a taxonomy of categories of “distractor” genes that do not cause the patient’s presenting syndrome yet would be considered plausible candidates during the clinical process. We then introduce a simulation framework that jointly samples genes and phenotypes according to these categories to simulate nontrivial and realistic patients. 
 
-![diagnostic_process](https://github.com/EmilyAlsentzer/rare-disease-simulation/blob/main/img/figure2_simulation-process.png?raw=true)
+<img src="https://github.com/EmilyAlsentzer/rare-disease-simulation/blob/main/img/figure2_simulation-process.png?raw=true" width="100" >
 
 
 
