@@ -10,14 +10,23 @@ We present a computational pipeline to simulate realistic undiagnosed rare disea
 
 ### Pipeline Featues
 - :sparkles:  **Realistic simulation of patient phenotypes and candidate genes:** We provide a taxonomy of categories of “distractor” genes that do not cause the patient’s presenting syndrome yet would be considered plausible candidates during the clinical process. We then introduce a simulation framework that jointly samples genes and phenotypes according to these categories to simulate nontrivial and realistic patients. 
+
+<p align="center">
+<img src="https://github.com/EmilyAlsentzer/rare-disease-simulation/blob/main/img/figure2_simulation-process.png?raw=true" width="600" >
+</p>
+
+
+
 - :sparkles: **Modelling novel genetic conditions:** To simulate patients with novel genetic conditions, we curate a knowledge graph (KG) of known gene–disease and gene–phenotype annotations that is time-stamped to 2015. This enables us to define post-2015 medical genetics discoveries as novel with respect to our KG. We manually time-stamp each disease and disease–gene association according to the date of the Pubmed article that reported the discovery and use these time-stamps to annotate each patient according to each of the disease-gene novelty categories below. 
 
-
+<p align="center">
+ <img src="https://github.com/EmilyAlsentzer/rare-disease-simulation/blob/main/img/figure1_diagnosis-process.png?raw=true" width="600" >
+</p>
 
 
 ### Ways to use this simulation pipeline
 - **Probing Gene Prioritization Models:** We provide our framework and simulated patients as a public resource to enable developers to internally validate and improve their tools by separately evaluating on simulated patients across novelty categories and distractor gene categories. 
-- **Training Machine-Learning based Gene Prioritization Models:** We also suspect that our dataset of simulated patients that span diverse genetic disorders and reflect realistic clinical processes and imprecision can serve as invaluable training data for machine learning models for rare disease diagnosis.
+- **Training Machine-Learning based Gene Prioritization Models:** We also expect that our dataset of simulated patients that span diverse genetic disorders and reflect realistic clinical processes and imprecision can serve as invaluable training data for machine learning models for rare disease diagnosis.
 
 
 
@@ -68,17 +77,77 @@ python simulate_patients.py
 
 The parameters of the simulation pipeline and their associated descriptions can be found in the `config.py` file. Modify these parameters to change the number of patients produced, the frequency of sampling each distractor gene module, etc.
 
+The simulated patients are saved as a json lines file, i.e. each line in the file is a json containing the information for a single patient. Below is a schema for the json and an example json for a single simulated patient. 
+
+```
+{
+    "id": int, 
+    "disease_id": str,  // orphanet ID
+    "true_genes": list(str),   // list of ensembl ids for the patient's causal gene(s)
+    "age": str,   // age category 
+    "positive_phenotypes": {str : list(str)}   // dict mapping phenotype to list of simulation modules that added the phenotype
+    "distractor_genes": {str : list(str)} // dict mapping ensembl id to list of simulation modules that added the distractor gene
+    "n_distractor_genes": int, //count of # distractor genes
+    "dropout_phenotypes": {str : list(str)} // dict with two entries for positive &. negative phenotypes that keep track of which phenotypes were removed during the dropout stage. This is important for the ablation analysis to be able to retroactively add back in the dropped phenotypes
+    "corruption_phenotypes": {str : list(str)} // dict with two entries for positive &negative phenotypes that keep track of which phenotypes were corrupted during the corruption stage. This is important for the ablation analysis to be able to retroactively "un-corrupt" the phenotypes
+ }
+
+```
+```
+{
+    "id": 9, 
+    "disease_id": "966",
+    "true_genes": ["ENSG00000069431"], 
+    "age": "Onset_Adult", 
+    "positive_phenotypes": {"HP:0000221": ["init_phenotypes"], "HP:0000232": ["init_phenotypes"], "HP:0001155": ["init_phenotypes"], "HP:0005692": ["init_phenotypes"], "HP:0012471": ["init_phenotypes"], "HP:0100540": ["init_phenotypes"], "HP:0001999": ["phenotype_corruption"], "HP:0001249": ["phenotype_distractor.1", "phenotype_distractor.3", "insufficient_explanatory.11"], "HP:0010285": ["phenotype_distractor.12"], "HP:0000924": ["non_syndromic_phenotype.13"], "HP:0004459": ["noisy_phenotype"]}, "negative_phenotypes": {"HP:0002615": ["phenotype_distractor.1"], "HP:0012734": ["phenotype_distractor.1"], "HP:0007440": ["phenotype_distractor.1"], "HP:0011043": ["phenotype_distractor.1"], "HP:0000470": ["phenotype_distractor.3"], "HP:0010978": ["phenotype_distractor.3"], "HP:0000902": ["phenotype_distractor.3"], "HP:0000347": ["phenotype_distractor.12"], "HP:0000272": ["phenotype_distractor.12"], "HP:0004209": ["phenotype_distractor.12"], "HP:0010492": ["noisy_phenotype"]}, 
+    "distractor_genes": {"ENSG00000165125": ["pathogenic_pheno_irrel.0"], "ENSG00000184470": ["phenotype_distractor.1"], "ENSG00000108821": ["pathogenic_pheno_irrel.2"], "ENSG00000179111": ["phenotype_distractor.3"], "ENSG00000157766": ["pathogenic_pheno_irrel.4"], "ENSG00000104899": ["pathogenic_pheno_irrel.5"], "ENSG00000157119": ["pathogenic_pheno_irrel.6"], "ENSG00000168646": ["pathogenic_pheno_irrel.7"], "ENSG00000142655": ["pathogenic_pheno_irrel.8"], "ENSG00000143156": ["tissue_distractor.9"], "ENSG00000131828": ["pathogenic_pheno_irrel.10"], "ENSG00000196277": ["insufficient_explanatory.11"], "ENSG00000088451": ["phenotype_distractor.12"], "ENSG00000157557": ["non_syndromic_phenotype.13"]}, 
+    "n_distractor_genes": 14, 
+    "dropout_phenotypes": {"positive_phenotypes": ["HP:0000414"], "negative_phenotypes": ["HP:0000212", "HP:0000581", "HP:0001249", "HP:0002230", "HP:0010285"]}, 
+    "corruption_phenotypes": {"positive_phenotypes": ["HP:0000280"]}
+ }
+```
+
 ### :two: Annotate patients with their disease-gene novelty category
 To annotate the simulated patients from the prior step with their disease-gene novelty category, run:
 
 ```
+cd simulate_patients
 python label_patients_with_novelty_categories.py --input simulated_patients.jsonl
 ```
 
-### :three: Evaluate gene prioritization model performance on the patients
+This will output another jsonl file that end in `_formatted.jsonl` in which each json has the same entries as above, but also includes additional labels that denote the patient's disease-gene novelty category (e.g. `known_gene_disease`) and whether the patient's gene is found in the knowledge graph used to evaluate the gene prioritization methods. 
 
-### :four: Create simulated patients with various pipeline components removed
+### :three: Run gene prioritization model performance on the simulated patients
+The simulated patients can be run on any gene prioritization model that accepts sets of phenotypes and (optionally) sets of candidate genes. We provide an example in the `gene_prioritization_algorithms` folder of how to run Phrank using the simulated patient cohort. 
 
+### :four: Evaluate model performance on the simulated patients
+The evaluation script assumes that the gene prioritization results are saved as a pickle file containing a dict mapping from `patient id` to a list of tuples where each tuple contains `(gene_score, candidate_gene_name)`.
+
+Run the evaluation script with the following, replacing `PATH_TO_RESULTS_PKL` with the path to the pickle file outputted from the gene prioritization algorithm in the prior step. This script will print the performance to the terminal and save a figure with top-k performance across novelty categories.
+
+```
+cd evaluation
+python evaluate.py --input simulated_patients_formatted.jsonl --results PATH_TO_RESULTS_PKL
+```
+
+### :five: Create, run, and evaluate on simulated patients created with portions of the simulation pipeline removed
+
+Run the following to reproduce our simulation pipeline ablation experiment, i.e. to create many versions of the simulated patients in which different components of the simulation pipeline are removed.
+
+```
+cd simulate_patients
+python simulate_patients.py --sim_many_genes ----equal_probs
+python simulate_patients.py --random_genes
+sh perform_ablations.sh
+```
+
+This will first create two cohorts of simulated patients: (1) patients with many candidate genes and (2) patients with random candidate genes. The bash script generate different versions of the simulated patients by ablating the phenotype and gene modules in the pipeline. In the gene ablations, the candidate genes of the patients created in step 1 will be filtered to include only the genes from the specified gene modules and replaced with randomly sampled genes from the patients generated in step 2. 
+
+After the ablated simulation patients are created, you can run and evaluate the gene prioritization models on each dataset as in usage 3 & 4 above. Running gene prioritization algorithms on the gene module ablations could prove useful for determining whether there are specific categories of distractor genes in which the model performs most poorly.
+
+## Additional Resources
+- In order to perform the time-stamped evaluation, we manually time-stampd each disease and disease–gene association in Orphanet according to the date of the Pubmed article that reported the discovery. We release these annotations publicly to the community in the data download in the Harvard Dataverse.
+- We also provide our preprocessing code that we used to (1) preprocess all orphanet data and (2) convert all genes to Ensembl IDs and update all HPO terms to the 2019 Human Phenotype Ontology. These preprocessing scripts can be found in the `process_simulation_resources` folder, but we also provide the already processed data in the data download.
 
 ## License
 This project is covered under the MIT License.
