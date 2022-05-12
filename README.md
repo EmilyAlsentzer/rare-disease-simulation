@@ -24,6 +24,7 @@ We present a computational pipeline to simulate realistic undiagnosed rare disea
 </p>
 
 
+
 ### Ways to use this simulation pipeline
 - **Probing Gene Prioritization Models:** We provide our framework and simulated patients as a public resource to enable developers to internally validate and improve their tools by separately evaluating on simulated patients across novelty categories and distractor gene categories. 
 - **Training Machine-Learning based Gene Prioritization Models:** We also expect that our dataset of simulated patients that span diverse genetic disorders and reflect realistic clinical processes and imprecision can serve as invaluable training data for machine learning models for rare disease diagnosis.
