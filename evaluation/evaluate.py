@@ -1,31 +1,28 @@
 import pandas as pd
-#import pickle
 import numpy as np
 import argparse
 import pickle5 as pickle
 from pathlib import Path
 from collections import defaultdict, OrderedDict, Counter
-from util import read_simulated_patients, read_udn_patients
 import matplotlib.pyplot as plt
 plt.switch_backend('agg')
 from scipy.stats import rankdata
-
 import sys
+
 sys.path.insert(0, '../') # add config to path
 import config
 from eval_plots import *
+from simulate_patients.utils.util import read_simulated_patients
+from evaluate_util import *
 
-PHENOLYZER_DIR = config.PROJECT_ROOT / 'phenolyzer'
-PHENOMIZER_DIR = config.PROJECT_ROOT / 'phenomizer'
-PHRANK_DIR = config.PROJECT_ROOT / 'phrank'
-OUTPUT_DIR = config.PROJECT_ROOT / 'gene_rank_results'
+RESULTS_DIR = config.PROJECT_ROOT / 'gene_prioritization_results'
 
 
 ####################################################
 # Plot either combined performance or by category
 
 def evaluate_all_methods(filenames, output_base_fname, patients, category_type='broad', is_udn=False, plot_labels=None):
-    print('\n----------- evaluate all methods ----------------')
+    print('\n----------- Evaluate All Methods ----------------')
     category = 'All'
     all_results_dict = OrderedDict()
 
@@ -36,10 +33,8 @@ def evaluate_all_methods(filenames, output_base_fname, patients, category_type='
         gene_rankings = read_rankings(filename)
         all_results_dict[run_name] = evaluate(filename, gene_rankings, patients, category, category_type)
 
-    fname = str(config.PROJECT_ROOT / 'gene_rank_results' / (output_base_fname + '_' + category + '.png'))
-    print(fname)
-    plot(all_results_dict, pretty_print_category(category), fname, is_udn, None)  #plot_labels 
-    print(all_results_dict)
+    fname = str(RESULTS_DIR / (output_base_fname + '_' + category + '.png'))
+    plot_top_k_acc(all_results_dict, fname, is_udn, plot_labels)   
     for k,v in all_results_dict.items():
         v['name'] = str(k).replace('simulated/simulated_patients_formatted', '')
     all_results_df = pd.DataFrame([v for k,v in all_results_dict.items()])
@@ -48,13 +43,12 @@ def evaluate_all_methods(filenames, output_base_fname, patients, category_type='
     return all_results_dict
 
 def evaluate_all_methods_all_categories(filenames, output_base_fname, category_dict, category_type, is_udn=False, plot_labels=None):
-    print('\n----------- evaluate all methods, all categories ----------------')
+    print('\n----------- Evaluate All Methods, All Categories ----------------')
 
     # get results for all categories
     categories = list(category_dict.keys())
     all_categories_results_dict = {}
     for category in categories:
-        print('category: ', category)
         patients = category_dict[category]
         print(f'There are {len(patients)} patients with {category} category')
         all_results_dict = OrderedDict()
@@ -62,25 +56,22 @@ def evaluate_all_methods_all_categories(filenames, output_base_fname, category_d
         for filename in filenames:
             print(f'evaluating.... {filename}')
             run_name= str(filename)
-
-
             gene_rankings = read_rankings(filename)
             all_results_dict[run_name] = evaluate(filename, gene_rankings, patients, category, category_type)
+        
         for k,v in all_results_dict.items():
             v['name'] = str(k).replace('simulated/simulated_patients_formatted', '')
+        
         all_results_df = pd.DataFrame([v for k,v in all_results_dict.items()])
         all_results_df = all_results_df.round(3).set_index('name')
         print(all_results_df)
-        all_results_df.to_csv(OUTPUT_DIR / f'{category}_all_model_results.csv')
-
+        all_results_df.to_csv(RESULTS_DIR / f'{category}_all_model_results.csv')
         all_categories_results_dict[category] = all_results_dict
 
 
     # Plot results for all categories
-    categories_fname = str(config.PROJECT_ROOT / 'gene_rank_results' /  (output_base_fname + '_all_categories.png'))
-
-    grouped_plot_all_categories(categories_fname, all_categories_results_dict)
-
+    categories_fname = str(RESULTS_DIR /  (output_base_fname + '_all_categories.png'))
+    grouped_plot_all_categories(categories_fname, all_categories_results_dict, plot_labels=plot_labels)
 
     return all_categories_results_dict
 
@@ -94,7 +85,10 @@ def main():
     parser = argparse.ArgumentParser(description='Evaluate performance on simulated & UDN patients.')
     parser.add_argument('--patients', type=str, default='simulated_patients_formatted.jsonl')
     parser.add_argument('--results', type=str, default=None, help='Path to pkl file with additional gene prioritization results to evaluate, if any')
+    parser.add_argument('--results_name', type=str, default=None, help='Name of Gene Prioritization model. This will appear in the plot as the x-axis label.')
+    parser.add_argument('--reproduce_paper_results', action='store_true', help='Specify this option to plot results of the gene prioritization algorithms already run on simulated patients.')
     args = parser.parse_args()
+    # NOTE: if reproduce_paper_results is True & an additional results file is passed in, then the user is responsible for making sure that they are all run on the same patient cohort.
 
 
     # Read in simulated patients
@@ -102,32 +96,29 @@ def main():
     patient_categories_dict, patient_broad_categories_dict = categorize_patients(patients) 
     sim_base_fname = args.patients.split('.jsonl')[0]
 
-    
-    if 'ablations/' in sim_base_fname:
-        results_dir = PHRANK_DIR / 'ablation_results' 
+    if args.reproduce_paper_results:
         filenames = [
-            results_dir / (sim_base_fname.split('ablations/')[1] + '_phrank_rankgenes_directly=True.pkl'), 
-            results_dir / (sim_base_fname.split('ablations/')[1] + '_phrank_rankgenes_directly=False.pkl'),
-            ] 
-
-    else:
-        results_dir = PHRANK_DIR / 'simulated'
-        filenames = [
-            results_dir / (sim_base_fname + '_phrank_rankgenes_directly=True.pkl'), 
-            results_dir / (sim_base_fname + '_phrank_rankgenes_directly=False.pkl'),
-            PHENOMIZER_DIR / 'results' / (sim_base_fname + '_1000.pkl'),
-            PHENOLYZER_DIR / 'results' / (sim_base_fname + '_rank_dict.pkl'),
-            config.PROJECT_ROOT / 'random' / (sim_base_fname + '_random_baseline.pkl')
+            RESULTS_DIR / 'phrank' / (sim_base_fname + '_phrank_rankgenes_directly=True.pkl'), 
+            RESULTS_DIR / 'phrank' / (sim_base_fname + '_phrank_rankgenes_directly=False.pkl'),
+            RESULTS_DIR / 'phenomizer' / (sim_base_fname + '.pkl'),
+            RESULTS_DIR / 'phenolyzer' / (sim_base_fname + '.pkl'),
+            RESULTS_DIR / 'random' / (sim_base_fname + '_random_baseline.pkl')
         ] 
+        plot_labels = ['Phrank \nPatient-Gene', 'Phrank \nPatient-Disease', 'Phenomizer', 'Phenolyzer', 'Random']
+    else:
+        filenames = []
+        plot_labels = []
 
-    if args.results is not None:
-        filenames = filenames + [args.results]
+    if args.results is not None and args.results_name is not None:
+        filenames =  filenames + [Path(args.results)]
+        print('filenames', filenames)
+        plot_labels = plot_labels + [args.results_name]
 
     # Evaluate all patients together 
-    sim_all_results_dict = evaluate_all_methods(filenames, sim_base_fname, patients, is_udn=False ) 
+    sim_all_results_dict = evaluate_all_methods(filenames, sim_base_fname, patients, is_udn=False , plot_labels=plot_labels) 
     
     # Evaluate each category separately
-    sim_all_results_dict_all_cat = evaluate_all_methods_all_categories(filenames, sim_base_fname, patient_broad_categories_dict, category_type='broad', is_udn=False) 
+    sim_all_results_dict_all_cat = evaluate_all_methods_all_categories(filenames, sim_base_fname, patient_broad_categories_dict, category_type='broad', is_udn=False, plot_labels=plot_labels) 
     
         
 if __name__ == "__main__":

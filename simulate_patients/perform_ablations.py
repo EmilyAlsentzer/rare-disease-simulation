@@ -305,6 +305,7 @@ def main(args):
         patients = get_equal_n_gene_modules(patients)
         write_patients(patients, equal_n_gene_modules_filename)
     
+    count_gene_modules_in_patients(patients)
 
     # replace existing gene modules with random genes & make sure that all associated phenotypes are removed
     if args.random_genes:

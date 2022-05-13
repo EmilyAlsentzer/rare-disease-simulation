@@ -443,7 +443,7 @@ class PatientSimulator():
             hp.MemberCounts = hp.MemberCounts/sum(hp.MemberCounts)
             hp.rename(columns={"MemberCounts":"Prop"}, inplace=True)
             
-            hp['Prop'] = self.temperature_softmax(hp['Prop'], 0.5) #TESTING
+            hp['Prop'] = self.temperature_softmax(hp['Prop'], 0.5) 
             age_to_hpo_probs_dict["Onset_" + hpo_list_str[i]] = (hp.HPO.values.tolist(), hp.Prop.values.tolist())
 
         return age_to_hpo_probs_dict

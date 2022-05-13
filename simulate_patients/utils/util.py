@@ -1,11 +1,11 @@
 import pandas as pd   
 import obonet
-
+import jsonlines
 import sys
 sys.path.insert(0, '../..') # add config to path
 import config
 
-from modules.disease import Disease
+from simulate_patients.modules.disease import Disease
 
 
 def get_nonspecific_phenotype_list(hpo_ontology):
@@ -59,3 +59,28 @@ def create_disease_dict(orphanet_phenotypes, orphanet_genes, orphanet_metadata):
         disease = Disease(orphanet_id, disease_name, gene_list, phenotype_dict, age_of_onsets)
         disease_dict[orphanet_id] = disease
     return disease_dict
+
+
+
+    ##############################################
+# Read in/write patients
+def read_udn_patients(filename):
+    patients = []
+    with jsonlines.open(filename) as reader:
+        for patient in reader:
+            patients.append(patient)
+    return patients
+
+
+def read_simulated_patients(filename):
+    patients = []
+    with jsonlines.open(filename) as reader:
+        for patient in reader:
+            if type(patient['positive_phenotypes']) == dict:
+                patient['positive_phenotypes'] = list(patient['positive_phenotypes'].keys())
+            if type(patient['negative_phenotypes']) == dict:
+                patient['negative_phenotypes'] = list(patient['negative_phenotypes'].keys())
+            if type(patient['distractor_genes']) == dict:
+                patient['distractor_genes'] = [gene for gene in list(patient['distractor_genes'].keys())] 
+            patients.append(patient)    
+    return patients

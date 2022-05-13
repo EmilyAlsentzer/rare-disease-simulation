@@ -1,6 +1,5 @@
 
 import sys
-import config
 import os
 from tqdm import tqdm
 from pathlib import Path
@@ -20,16 +19,16 @@ import matplotlib.pyplot as plt
 plt.switch_backend('agg')
 import seaborn as sns
 
-sys.path.insert(0, '.') # add config to path
 sys.path.insert(0, '../') # add config to path
+import config
+
 
 from modules.disease import Disease
 from modules.patient import Patient
 from modules.patient_simulator import PatientSimulator
 
 from utils.util import create_disease_dict
-
-from validate.validate_util import read_patients 
+ pd.options.mode.chained_assignment = None
 
 
 SEED = 42

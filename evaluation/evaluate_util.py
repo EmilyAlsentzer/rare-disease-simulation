@@ -61,8 +61,7 @@ def find_correct_genes(filename, patients, gene_rankings, category, category_typ
         assert patient_id in gene_rankings, f'patient {patient_id} \'s genes, (correct={correct_genes}) were not ranked'
         gene_scores = gene_rankings[patient_id]
         
-
-        if filename.parent.parent.name == 'phenomizer':
+        if 'phenomizer' in str(filename):
             if len(gene_scores[0]) == 3:
                 ranked_genes = rankdata([score * -1 for pval, score, gene in gene_scores], method='average')
                 pvals = [pval for pval, score, gene in gene_scores]
@@ -108,8 +107,6 @@ def mean_average_precision(correct_gene_bools):
         all_map.append(np.mean([sum(bools[:i+1])/len(bools[:i+1]) for i, b in enumerate(bools) if b==1]))
     return np.mean(all_map)
 
-def reindex_ranks(ranks):
-    return [r - i for i, r in enumerate(ranks)]
 
 def evaluate(filename, gene_rankings, patients, category, category_type, eval_type = 'duplicate_patients' ): 
     results_dict = defaultdict(list)

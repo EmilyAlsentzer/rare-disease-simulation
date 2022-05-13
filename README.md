@@ -69,7 +69,7 @@ Go to `config.py` and set the project directory (`PROJECT_ROOT`) to be the path 
 ## Usage
 
 ### :one: Simulate Realistic Rare Disease Patients
-To run the simulation pipeline with default parameters, run the following code. This will run the simulation pipeline and output the simulation patients to a jsonl file named `simulated_patients.jsonl` by default in the directory specified by `config.SIMULATED_DATA_PATH`.
+To run the simulation pipeline with default parameters, run the following code. This will run the simulation pipeline and output the simulation patients to a jsonl file named `simulated_patients.jsonl` by default in the directory specified by `config.SIMULATED_DATA_PATH`. Generation of the simulated cohort with default parameters takes ~1 hr, but you can modify the # of patients produced in the `config.py` file. 
 
 ```
 cd simulate_patients
@@ -116,10 +116,22 @@ cd simulate_patients
 python label_patients_with_novelty_categories.py --input simulated_patients.jsonl
 ```
 
-This will output another jsonl file that end in `_formatted.jsonl` in which each json has the same entries as above, but also includes additional labels that denote the patient's disease-gene novelty category (e.g. `known_gene_disease`) and whether the patient's gene is found in the knowledge graph used to evaluate the gene prioritization methods. 
+This will output another jsonl file that ends in `_formatted.jsonl` in which each json has the same entries as above, but also includes additional labels that denote the patient's disease-gene novelty category (e.g. `known_gene_disease`) and whether the patient's gene is found in the knowledge graph used to evaluate the gene prioritization methods. 
 
 ### :three: Run gene prioritization model performance on the simulated patients
-The simulated patients can be run on any gene prioritization model that accepts sets of phenotypes and (optionally) sets of candidate genes. We provide an example in the `gene_prioritization_algorithms` folder of how to run Phrank using the simulated patient cohort. 
+The simulated patients can be run on any gene prioritization model that accepts sets of phenotypes and (optionally) sets of candidate genes. We provide an example of how to run Phrank on the simulated patients below.
+
+To run Phrank you should first download the Phrank repo:
+```
+cd /PATH/TO/DATA/DIR # nativate to the folder specified by config.PROJECT_ROOT
+git clone https://bitbucket.org/bejerano/phrank/src/master/
+mv master phrank # rename downloaded repo 
+```
+Then run the versions of the Phrank algorithm:
+```
+cd gene_prioritization_algorithms
+sh run_phrank.sh
+```
 
 ### :four: Evaluate model performance on the simulated patients
 The evaluation script assumes that the gene prioritization results are saved as a pickle file containing a dict mapping from `patient id` to a list of tuples where each tuple contains `(gene_score, candidate_gene_name)`.

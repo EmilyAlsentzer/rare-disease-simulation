@@ -1,7 +1,4 @@
 import sys
-sys.path.insert(0, '../') # add config to path
-import config
-
 import argparse
 from pathlib import Path
 import json
@@ -12,17 +9,19 @@ import numpy as np
 import jsonlines
 from collections import defaultdict
 
+sys.path.insert(0, '../') # add config to path
+import config
+from simulate_patients.utils.util import read_simulated_patients
+
+sys.path.insert(0, f'{config.PROJECT_ROOT}/phrank/') # add config to path
 from phrank import Phrank
 from phrank import utils as phrank_utils
 
-from util import read_simulated_patients
-
-PHRANK_DIR = config.PROJECT_ROOT / 'gene_prioritization_results'.  / 'phrank'
 
 DAG = config.PROJECT_ROOT / 'hpo' / '2019' / "hpodag.txt"
-PRE_2015_GENE_TO_PHENO = config.KNOWLEDGE_GRAPH_PATH  / 'phenolyzer_kg_phrank/hpo_gene.tsv'
-PRE_2015_DX_TO_PHENO = config.KNOWLEDGE_GRAPH_PATH  / 'phenolyzer_kg_phrank/hpo_disease.tsv'
-PRE_2015_DX_TO_GENE = config.KNOWLEDGE_GRAPH_PATH  / 'phenolyzer_kg_phrank/gene_disease.tsv'
+PRE_2015_GENE_TO_PHENO = config.KNOWLEDGE_GRAPH_PATH  / 'formatted_phenolyzer_2015/hpo_gene.tsv'
+PRE_2015_DX_TO_PHENO = config.KNOWLEDGE_GRAPH_PATH  / 'formatted_phenolyzer_2015/hpo_disease.tsv'
+PRE_2015_DX_TO_GENE = config.KNOWLEDGE_GRAPH_PATH  / 'formatted_phenolyzer_2015/gene_disease.tsv'
 
 
 def run_phrank(args, patients, p_hpo):
@@ -51,19 +50,12 @@ def run_phrank(args, patients, p_hpo):
 
 ###################################################
 # Phrank Methods
-def compute_phenotype_similarity(p_hpo, phenotypeset1, phenotypeset2):
-    
-    # computing the similarity between two sets of phenotypes
-    matchscore = p_hpo.compute_phenotype_match(phenotypeset1, phenotypeset2)
-    return matchscore
 
 def rank_diseases(p_hpo, genes, phenotypes, normalized=False, baseline=False):
-    
     # sorting the disease by best match
     return p_hpo.rank_diseases(genes, phenotypes, normalized=normalized, baseline=baseline)
 
 def rank_genes(args, p_hpo, genes, phenotypes, normalized=False, baseline=False):
-    
     # sorting the genes by best match
     if args.rank_genes_directly:
         # automatically gives score of 0 to genes not in KG
@@ -77,11 +69,13 @@ def rank_genes(args, p_hpo, genes, phenotypes, normalized=False, baseline=False)
 
 def main():
     parser = argparse.ArgumentParser(description='Run Phrank Algorithm')
-    parser.add_argument('--sim_input', type=str, default='simulated_patients_formatted.jsonl')
+    parser.add_argument('--sim_input', type=str, default=f'{config.SIMULATED_DATA_PATH}/simulated_patients_formatted.jsonl')
     parser.add_argument('--kg', type=str, default='pre_2015', help='Specify which knowledge graph to use')
     parser.add_argument('--rank_type', type=str, default='genes', help='Specify whether to rank "genes" or "diseases"')
     parser.add_argument('--rank_genes_directly', action='store_true', help='Specify whether rank genes directly or rank genes via diseases')
     parser.add_argument('--use_disease_annotations', action='store_true', help='Specify whether to initialize Phrank via G-D and D-P links rather than just G-P links')
+    parser.add_argument('--output_dir', type=str, default=f'{config.PROJECT_ROOT}/gene_prioritization_results/phrank', help='Specify path where the results will be outputted')
+
     args = parser.parse_args()
 
     if args.kg == 'pre_2015':
@@ -99,20 +93,21 @@ def main():
         p_hpo = Phrank(DAG, diseaseannotationsfile=diseaseannotationsfile, diseasegenefile=diseasegenefile)
 
     # read in patients
-    patients = read_simulated_patients(config.SIMULATED_DATA_PATH / args.sim_input)
+    patients = read_simulated_patients(args.sim_input)
     
     # get filename
-    sim_fname = args.sim_input.split('.jsonl')[0]
-    if 'ablations/'  in sim_fname: 
-        sim_fname = sim_fname.split('ablations/')[1]
+    sim_fname = Path(args.sim_input).stem #args.sim_input.split('.jsonl')[0]
+    # if 'ablations/'  in sim_fname: 
+    #     sim_fname = sim_fname.split('ablations/')[1]
     use_dx_annot_text = f'_use_dx_annot=True_' if args.use_disease_annotations else ''
-    fname = PHRANK_DIR / (sim_fname + '_phrank_rankgenes_directly=' + str(args.rank_genes_directly) + use_dx_annot_text + '.pkl')
-    print(f'Saving to file...{fname}')
+    fname =  Path(args.output_dir) / (sim_fname + '_phrank_rankgenes_directly=' + str(args.rank_genes_directly) + use_dx_annot_text + '.pkl')
+    
     
     # Run Phrank
     rank_dict = run_phrank(args, patients, p_hpo)
 
     # Save Results to file
+    print(f'Saving to file...{fname}')
     with open(fname, 'wb') as handle:
         pickle.dump(rank_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
