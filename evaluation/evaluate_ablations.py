@@ -49,7 +49,8 @@ def plot_phrank_ablations(results_stem, results_path, ablations, patients, fname
 def evaluate_ablations(results_filename, results_path, patients):
     print('Evaluating Ablations')
 
-    ablations = ablations = [('Complete Pipeline', 'simulated_patients_equal_probs_revised_formatted'), 
+    ablations = ablations = [
+    ('Complete Pipeline', 'simulated_patients_equal_probs_revised_formatted'), 
     ('No Phenotype Modules', 'simulated_patients_no_phencorrupt_no_phendrop_no_phennoise_ablations_formatted'),
     ('No Gene Modules', 'simulated_patients_rand_genes_no_phengenemod_ablations_formatted'),
     ('No Phenotype or Gene Modules', 'simulated_patients_rand_genes_no_phencorrupt_no_phendrop_no_phennoise_no_phengenemod_ablations_formatted'),
@@ -60,7 +61,7 @@ def evaluate_ablations(results_filename, results_path, patients):
     gene_replaced_ablations = [
     ('No Gene Modules', 'simulated_patients_equal_probs_revised_formatted'), 
     ('Similarly Expressed Genes', 'simulated_patients_replace_genes_with_rand_remove_tissue_distractor_ablations_formatted'), 
-    #('Insufficiently Explanatory Genes', 'simulated_patients_replace_genes_with_rand_remove_insufficient_explanatory_ablations_formatted'), 
+    ('Insufficiently Explanatory Genes', 'simulated_patients_replace_genes_with_rand_remove_insufficient_explanatory_ablations_formatted'), 
     ('Common False Positive Genes', 'simulated_patients_replace_genes_with_rand_remove_common_fp_ablations_formatted'), 
     ('Phenotypically-distinct Disease Genes', 'simulated_patients_replace_genes_with_rand_remove_pathogenic_pheno_irrel_ablations_formatted'), 
     ('Genes Associated with Incidental Phenotypes', 'simulated_patients_replace_genes_with_rand_remove_non_syndromic_phenotype_ablations_formatted'), 
@@ -71,7 +72,8 @@ def evaluate_ablations(results_filename, results_path, patients):
     plot_phrank_ablations(results_filename, results_path, gene_replaced_ablations, patients, fname, xlabel='Gene Module Removed')
 
 
-    ablations = [('None', 'simulated_patients_equal_probs_revised_formatted'), 
+    ablations = [
+    ('None', 'simulated_patients_equal_probs_revised_formatted'), 
     ('Corrupt', 'simulated_patients_no_phencorrupt_ablations_formatted'),
     ('Dropout', 'simulated_patients_no_phendrop_ablations_formatted'),
     ('Noise', 'simulated_patients_no_phennoise_ablations_formatted'),

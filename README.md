@@ -151,7 +151,9 @@ sh simulate_patients/perform_ablations.sh
 
 This will first create two cohorts of simulated patients: (1) patients with many candidate genes and (2) patients with random candidate genes. The bash script generate different versions of the simulated patients by ablating the phenotype and gene modules in the pipeline. In the gene ablations, the candidate genes of the patients created in step 1 will be filtered to include only the genes from the specified gene modules and replaced with randomly sampled genes from the patients generated in step 2. 
 
-After the ablated simulation patients are created, you can run and evaluate the gene prioritization models on each dataset as in usage 3 & 4 above. Running gene prioritization algorithms on the gene module ablations could prove useful for determining whether there are specific categories of distractor genes in which the model performs most poorly. To evaluate, you can either pass in a single ablated patient jsonl and results path to `evaluate.py` as in usage 4. Alternatively, to evaluate and plot all ablations at once, run:
+After the ablated simulation patients are created, you can run and evaluate the gene prioritization models on each dataset as in usage 3 & 4 above. Running gene prioritization algorithms on the gene module ablations could prove useful for determining whether there are specific categories of distractor genes in which the model performs most poorly. 
+
+To run Phrank on the the ablated patients, modify the `PATIENT_PATH` in `gene_prioritization_algorithms/run_phrank_ablations.sh` and then run the script. To evaluate, you can either pass in a single ablated patient jsonl and results path to `evaluate.py` as in usage 4. Alternatively, to evaluate and plot all ablations at once, run:
 
 ```
 python evaluate_ablations.py \
