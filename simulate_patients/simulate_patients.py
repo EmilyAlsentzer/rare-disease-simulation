@@ -19,7 +19,6 @@ import matplotlib.pyplot as plt
 plt.switch_backend('agg')
 import seaborn as sns
 
-sys.path.insert(0, '../') # add config to path
 import config
 
 
@@ -28,7 +27,7 @@ from modules.patient import Patient
 from modules.patient_simulator import PatientSimulator
 
 from utils.util import create_disease_dict
- pd.options.mode.chained_assignment = None
+pd.options.mode.chained_assignment = None
 
 
 SEED = 42

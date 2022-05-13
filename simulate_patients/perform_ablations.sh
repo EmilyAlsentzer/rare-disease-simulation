@@ -7,24 +7,24 @@ ABLATION_PATH=/home/ema30/udn_data/data/simulated_patients/ablations
 #################################################
 # Run all combinations of phenotype ablations
 
-python perform_ablations.py --no_phen_noise
-python perform_ablations.py --no_phen_dropout
-python perform_ablations.py --no_phen_corruption
-python perform_ablations.py --no_gene_module_phen
+python simulate_patients/perform_ablations.py --no_phen_noise
+python simulate_patients/perform_ablations.py --no_phen_dropout
+python simulate_patients/perform_ablations.py --no_phen_corruption
+python simulate_patients/perform_ablations.py --no_gene_module_phen
 
-python perform_ablations.py --no_phen_noise --no_phen_dropout
-python perform_ablations.py --no_phen_corruption --no_phen_dropout
-python perform_ablations.py --no_phen_corruption --no_phen_noise
-python perform_ablations.py --no_gene_module_phen --no_phen_noise
-python perform_ablations.py --no_gene_module_phen --no_phen_dropout
-python perform_ablations.py --no_gene_module_phen --no_phen_corruption
+python simulate_patients/perform_ablations.py --no_phen_noise --no_phen_dropout
+python simulate_patients/perform_ablations.py --no_phen_corruption --no_phen_dropout
+python simulate_patients/perform_ablations.py --no_phen_corruption --no_phen_noise
+python simulate_patients/perform_ablations.py --no_gene_module_phen --no_phen_noise
+python simulate_patients/perform_ablations.py --no_gene_module_phen --no_phen_dropout
+python simulate_patients/perform_ablations.py --no_gene_module_phen --no_phen_corruption
 
-python perform_ablations.py --no_gene_module_phen --no_phen_corruption --no_phen_noise 
-python perform_ablations.py --no_gene_module_phen --no_phen_corruption --no_phen_dropout
-python perform_ablations.py --no_phen_corruption --no_phen_dropout --no_phen_noise 
-python perform_ablations.py --no_gene_module_phen --no_phen_dropout --no_phen_noise 
+python simulate_patients/perform_ablations.py --no_gene_module_phen --no_phen_corruption --no_phen_noise 
+python simulate_patients/perform_ablations.py --no_gene_module_phen --no_phen_corruption --no_phen_dropout
+python simulate_patients/perform_ablations.py --no_phen_corruption --no_phen_dropout --no_phen_noise 
+python simulate_patients/perform_ablations.py --no_gene_module_phen --no_phen_dropout --no_phen_noise 
 
-python perform_ablations.py --no_gene_module_phen --no_phen_corruption --no_phen_noise --no_phen_dropout
+python simulate_patients/perform_ablations.py --no_gene_module_phen --no_phen_corruption --no_phen_noise --no_phen_dropout
 
 # Format patients
 for filename in ${ABLATION_PATH}/simulated_patients_no_*.jsonl; do
@@ -32,18 +32,18 @@ for filename in ${ABLATION_PATH}/simulated_patients_no_*.jsonl; do
     then
         fname=$(basename "$filename" .txt)
         echo $fname
-        python label_patients_with_novelty_categories.py --input ablations/$fname
+        python simulate_patients/label_patients_with_novelty_categories.py --input ablations/$fname
     fi
 done
 
 #################################################
 # Run all gene ablations
-python perform_ablations.py  --remove_module non_syndromic_phenotype
-python perform_ablations.py  --remove_module common_fp
-python perform_ablations.py  --remove_module tissue_distractor
-python perform_ablations.py  --remove_module pathogenic_pheno_irrel
-python perform_ablations.py  --remove_module insufficient_explanatory
-python perform_ablations.py  --remove_module phenotype_distractor
+python simulate_patients/perform_ablations.py  --remove_module non_syndromic_phenotype
+python simulate_patients/perform_ablations.py  --remove_module common_fp
+python simulate_patients/perform_ablations.py  --remove_module tissue_distractor
+python simulate_patients/perform_ablations.py  --remove_module pathogenic_pheno_irrel
+python simulate_patients/perform_ablations.py  --remove_module insufficient_explanatory
+python simulate_patients/perform_ablations.py  --remove_module phenotype_distractor
 
 # Format patients
 for filename in ${ABLATION_PATH}/simulated_patients_remove_*.jsonl; do
@@ -51,7 +51,7 @@ for filename in ${ABLATION_PATH}/simulated_patients_remove_*.jsonl; do
     then
         fname=$(basename "$filename" .txt)
         echo $fname
-        python label_patients_with_novelty_categories.py --input ablations/$fname
+        python simulate_patients/label_patients_with_novelty_categories.py --input ablations/$fname
     fi
 done
 

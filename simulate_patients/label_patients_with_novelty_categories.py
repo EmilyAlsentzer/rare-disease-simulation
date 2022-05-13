@@ -8,7 +8,6 @@ import argparse
 from tqdm import tqdm
 
 import sys
-sys.path.insert(0, '../') # add config to path
 import config
 
 #orphanet files

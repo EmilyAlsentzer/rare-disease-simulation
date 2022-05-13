@@ -72,8 +72,7 @@ Go to `config.py` and set the project directory (`PROJECT_ROOT`) to be the path 
 To run the simulation pipeline with default parameters, run the following code. This will run the simulation pipeline and output the simulation patients to a jsonl file named `simulated_patients.jsonl` by default in the directory specified by `config.SIMULATED_DATA_PATH`. Generation of the simulated cohort with default parameters takes ~1 hr, but you can modify the # of patients produced in the `config.py` file. 
 
 ```
-cd simulate_patients
-python simulate_patients.py
+python simulate_patients/simulate_patients.py
 ```
 
 The parameters of the simulation pipeline and their associated descriptions can be found in the `config.py` file. Modify these parameters to change the number of patients produced, the frequency of sampling each distractor gene module, etc.
@@ -112,8 +111,7 @@ The simulated patients are saved as a json lines file, i.e. each line in the fil
 To annotate the simulated patients from the prior step with their disease-gene novelty category, run:
 
 ```
-cd simulate_patients
-python label_patients_with_novelty_categories.py --input simulated_patients.jsonl
+python simulate_patients/label_patients_with_novelty_categories.py --input simulated_patients.jsonl
 ```
 
 This will output another jsonl file that ends in `_formatted.jsonl` in which each json has the same entries as above, but also includes additional labels that denote the patient's disease-gene novelty category (e.g. `known_gene_disease`) and whether the patient's gene is found in the knowledge graph used to evaluate the gene prioritization methods. 
@@ -125,12 +123,11 @@ To run Phrank you should first download the Phrank repo:
 ```
 cd /PATH/TO/DATA/DIR # nativate to the folder specified by config.PROJECT_ROOT
 git clone https://bitbucket.org/bejerano/phrank/src/master/
-mv master phrank # rename downloaded repo 
+mv master phrank   # rename downloaded repo 
 ```
 Then run the versions of the Phrank algorithm:
 ```
-cd gene_prioritization_algorithms
-sh run_phrank.sh
+sh gene_prioritization_algorithms/run_phrank.sh
 ```
 
 ### :four: Evaluate model performance on the simulated patients
@@ -139,8 +136,7 @@ The evaluation script assumes that the gene prioritization results are saved as 
 Run the evaluation script with the following, replacing `PATH_TO_RESULTS_PKL` with the path to the pickle file outputted from the gene prioritization algorithm in the prior step. This script will print the performance to the terminal and save a figure with top-k performance across novelty categories.
 
 ```
-cd evaluation
-python evaluate.py --input simulated_patients_formatted.jsonl --results PATH_TO_RESULTS_PKL
+python evaluation/evaluate.py --patients simulated_patients_formatted.jsonl --results PATH_TO_RESULTS_PKL
 ```
 
 ### :five: Create, run, and evaluate on simulated patients created with portions of the simulation pipeline removed
@@ -148,15 +144,20 @@ python evaluate.py --input simulated_patients_formatted.jsonl --results PATH_TO_
 Run the following to reproduce our simulation pipeline ablation experiment, i.e. to create many versions of the simulated patients in which different components of the simulation pipeline are removed.
 
 ```
-cd simulate_patients
-python simulate_patients.py --sim_many_genes ----equal_probs
-python simulate_patients.py --random_genes
-sh perform_ablations.sh
+python simulate_patients/simulate_patients.py --sim_many_genes ----equal_probs
+python simulate_patients/simulate_patients.py --random_genes
+sh simulate_patients/perform_ablations.sh
 ```
 
 This will first create two cohorts of simulated patients: (1) patients with many candidate genes and (2) patients with random candidate genes. The bash script generate different versions of the simulated patients by ablating the phenotype and gene modules in the pipeline. In the gene ablations, the candidate genes of the patients created in step 1 will be filtered to include only the genes from the specified gene modules and replaced with randomly sampled genes from the patients generated in step 2. 
 
-After the ablated simulation patients are created, you can run and evaluate the gene prioritization models on each dataset as in usage 3 & 4 above. Running gene prioritization algorithms on the gene module ablations could prove useful for determining whether there are specific categories of distractor genes in which the model performs most poorly.
+After the ablated simulation patients are created, you can run and evaluate the gene prioritization models on each dataset as in usage 3 & 4 above. Running gene prioritization algorithms on the gene module ablations could prove useful for determining whether there are specific categories of distractor genes in which the model performs most poorly. To evaluate, you can either pass in a single ablated patient jsonl and results path to `evaluate.py` as in usage 4. Alternatively, to evaluate and plot all ablations at once, run:
+
+```
+python evaluate_ablations.py \
+--results_suffix '_phrank_rankgenes_directly=False.pkl' # suffix added on to each ablation run for the gene prioritization algorthm (here, Phrank Patient-Disease)
+--results_path /PATH/TO/ABLATION/RESULTS  # replace with a path to all of the ablation results - e.g. config.SIMULATED_DATA_PATH / 'gene_prioritization_results' / 'phrank_ablation'
+```
 
 ## Additional Resources
 - In order to perform the time-stamped evaluation, we manually time-stampd each disease and disease–gene association in Orphanet according to the date of the Pubmed article that reported the discovery. We release these annotations publicly to the community in the data download in the Harvard Dataverse.

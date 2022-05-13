@@ -10,7 +10,6 @@ plt.switch_backend('agg')
 from scipy.stats import rankdata
 
 import sys
-sys.path.insert(0, '../') # add config to path
 import config
 from eval_plots import *
 from simulate_patients.utils.util import read_simulated_patients
@@ -98,14 +97,14 @@ def evaluate_ablations(results_filename, results_path, patients):
 
 def main():
     parser = argparse.ArgumentParser(description='Evaluate performance on simulated & UDN patients.')
-    parser.add_argument('--patients', type=str, default='simulated_patients_formatted.jsonl')
+    parser.add_argument('--patients', type=str, default=f'{config.SIMULATED_DATA_PATH}/ablations/simulated_patients_equal_probs_revised_formatted.jsonl') 
     parser.add_argument('--results_suffix', type=str, default='_phrank_rankgenes_directly=False.pkl', help='Suffix of pkl file with gene prioritization results to evaluate')
     parser.add_argument('--path_to_results', type=str, default=str(RESULTS_DIR/'phrank_ablation'), help='Path containing results of Gene Prioritization models on ablations')
 
     args = parser.parse_args()
 
     # Read in simulated patients
-    patients = read_simulated_patients(config.SIMULATED_DATA_PATH / args.patients)
+    patients = read_simulated_patients(args.patients)
 
     # Evaluate ablations
     evaluate_ablations(args.results_suffix, args.path_to_results, patients) 

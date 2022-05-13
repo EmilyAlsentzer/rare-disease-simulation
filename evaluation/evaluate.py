@@ -9,7 +9,6 @@ plt.switch_backend('agg')
 from scipy.stats import rankdata
 import sys
 
-sys.path.insert(0, '../') # add config to path
 import config
 from eval_plots import *
 from simulate_patients.utils.util import read_simulated_patients

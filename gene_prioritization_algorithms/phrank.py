@@ -9,7 +9,6 @@ import numpy as np
 import jsonlines
 from collections import defaultdict
 
-sys.path.insert(0, '../') # add config to path
 import config
 from simulate_patients.utils.util import read_simulated_patients
 

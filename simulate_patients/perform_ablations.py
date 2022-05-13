@@ -13,8 +13,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 import sys
-sys.path.insert(0, '../') # add config to path
-sys.path.insert(0, '../baselines') # add config to path
 
 import config
 from create_dataset_for_baselines import read_jsonl
