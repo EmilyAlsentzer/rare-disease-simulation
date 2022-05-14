@@ -31,7 +31,16 @@ We present a computational pipeline to simulate realistic undiagnosed rare disea
 
 
 
-## Environment Setup
+## Installation
+
+### Download the Repo
+First, download the github repository. 
+```
+git clone https://github.com/EmilyAlsentzer/rare-disease-simulation
+cd rare-disease-simulation
+```
+
+### Environment Setup
 This codebase leverages Python and many associated packages. To create a conda environment with all of the required packages, ensure that [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) is installed and run the following:
 
 ```
@@ -44,14 +53,10 @@ Alternatively, to install via pip, run:
 pip install -r requirements.txt
 ```
 
-
-
-## Installation
+### Install the Repo
 After the conda environment is created and activated, install the github repo with the following:
 
 ```
-git clone https://github.com/EmilyAlsentzer/rare-disease-simulation
-cd rare-disease-simulation
 pip install -e .
 ```
 
