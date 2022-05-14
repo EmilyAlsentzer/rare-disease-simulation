@@ -64,7 +64,8 @@ pip install -e .
 Before you run any code in the repository, you will need to (1) download the required data and (2) specify the path to the project directory.
 
 ### Download Data
-First, download the data from Harvard Dataverse
+The data is hosted on [Harvard Dataverse]() with the persistent identifier: TODO. To maintain the directory structure while downloading the files, make sure to select all files and download in the original format. The entire dataset is approximately 3GB when zipped. Note that if you only wish to download the already generated simulated patients, you can directly download `simulated_patients_formatted.jsonl`.
+
 
 ### Setting up config file
 Go to `config.py` and set the project directory (`PROJECT_ROOT`) to be the path to the data folder downloaded in the previous step. 
