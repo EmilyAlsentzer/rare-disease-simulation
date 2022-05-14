@@ -125,13 +125,7 @@ This will output another jsonl file that ends in `_formatted.jsonl` in which eac
 ### :three: Run gene prioritization model performance on the simulated patients
 The simulated patients can be run on any gene prioritization model that accepts sets of phenotypes and (optionally) sets of candidate genes. We provide an example of how to run Phrank on the simulated patients below.
 
-To run Phrank you should first download the Phrank repo:
-```
-cd /PATH/TO/DATA/DIR # nativate to the folder specified by config.PROJECT_ROOT
-git clone https://bitbucket.org/bejerano/phrank/src/master/
-mv master phrank   # rename downloaded repo 
-```
-Then run the versions of the Phrank algorithm:
+To run both versions of the Phrank algorithm:
 ```
 sh gene_prioritization_algorithms/run_phrank.sh
 ```
