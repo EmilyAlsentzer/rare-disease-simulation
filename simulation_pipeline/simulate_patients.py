@@ -22,11 +22,11 @@ import seaborn as sns
 import config
 
 
-from modules.disease import Disease
-from modules.patient import Patient
-from modules.patient_simulator import PatientSimulator
 
-from utils.util import create_disease_dict
+from simulation_pipeline.modules.patient_simulator import PatientSimulator
+# from modules.disease import Disease
+# from modules.patient import Patient
+from simulation_pipeline.utils.util import create_disease_dict
 pd.options.mode.chained_assignment = None
 
 

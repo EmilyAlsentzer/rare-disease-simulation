@@ -10,7 +10,6 @@ from pathlib import Path
 import logging
 logging.basicConfig(level=logging.INFO)
 
-sys.path.insert(0, '../..') # add config to path
 import config
 
 '''

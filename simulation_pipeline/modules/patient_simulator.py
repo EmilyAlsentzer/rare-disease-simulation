@@ -12,17 +12,13 @@ from collections import defaultdict
 import logging
 import statistics
 from scipy.special import softmax
-
 from sklearn.metrics.pairwise import cosine_similarity
-from scipy.special import softmax
 
-sys.path.insert(0, '../') # add config to path
 import config
 
-from modules.disease import Disease, phenotype_frequency_dict
-from modules.patient import Patient
-
-from utils.util import get_nonspecific_phenotype_list
+from simulation_pipeline.modules.disease import Disease, phenotype_frequency_dict
+from simulation_pipeline.modules.patient import Patient
+from simulation_pipeline.utils.util import get_nonspecific_phenotype_list
 
 
 

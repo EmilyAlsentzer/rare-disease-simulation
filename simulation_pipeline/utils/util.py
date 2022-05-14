@@ -2,10 +2,9 @@ import pandas as pd
 import obonet
 import jsonlines
 import sys
-sys.path.insert(0, '../..') # add config to path
 import config
 
-from simulate_patients.modules.disease import Disease
+from simulation_pipeline.modules.disease import Disease
 
 
 def get_nonspecific_phenotype_list(hpo_ontology):

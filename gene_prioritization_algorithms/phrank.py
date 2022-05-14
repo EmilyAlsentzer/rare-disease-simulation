@@ -10,7 +10,7 @@ import jsonlines
 from collections import defaultdict
 
 import config
-from simulate_patients.utils.util import read_simulated_patients
+from simulation_pipeline.utils.util import read_simulated_patients
 
 sys.path.insert(0, f'{config.PROJECT_ROOT}/phrank/') # add config to path
 from phrank import Phrank

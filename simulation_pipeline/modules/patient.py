@@ -2,9 +2,11 @@ import typing
 from typing import Set, List
 from collections import defaultdict, OrderedDict
 from enum import Enum
-from modules.disease import Disease
 import random
 import logging
+
+from simulation_pipeline.modules.disease import Disease
+
 
 
 class Patient():
