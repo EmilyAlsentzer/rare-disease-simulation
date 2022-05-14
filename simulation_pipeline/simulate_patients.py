@@ -24,8 +24,8 @@ import config
 
 
 from simulation_pipeline.modules.patient_simulator import PatientSimulator
-# from modules.disease import Disease
-# from modules.patient import Patient
+from simulation_pipeline.modules.disease import Disease
+from simulation_pipeline.modules.patient import Patient
 from simulation_pipeline.utils.util import create_disease_dict
 pd.options.mode.chained_assignment = None
 
