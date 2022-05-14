@@ -144,7 +144,7 @@ python evaluation/evaluate.py --patients simulated_patients_formatted.jsonl --re
 Run the following to reproduce our simulation pipeline ablation experiment, i.e. to create many versions of the simulated patients in which different components of the simulation pipeline are removed.
 
 ```
-python simulation_pipeline/simulate_patients.py --sim_many_genes ----equal_probs
+python simulation_pipeline/simulate_patients.py --sim_many_genes --equal_probs
 python simulation_pipeline/simulate_patients.py --random_genes
 sh simulation_pipeline/perform_ablations.sh
 ```
