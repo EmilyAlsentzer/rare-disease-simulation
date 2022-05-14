@@ -31,7 +31,16 @@ We present a computational pipeline to simulate realistic undiagnosed rare disea
 
 
 
-## Environment Setup
+## Installation
+
+### Download the Repo
+First, download the github repository. 
+```
+git clone https://github.com/EmilyAlsentzer/rare-disease-simulation
+cd rare-disease-simulation
+```
+
+### Environment Setup
 This codebase leverages Python and many associated packages. To create a conda environment with all of the required packages, ensure that [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) is installed and run the following:
 
 ```
@@ -44,14 +53,10 @@ Alternatively, to install via pip, run:
 pip install -r requirements.txt
 ```
 
-
-
-## Installation
+### Install the Repo
 After the conda environment is created and activated, install the github repo with the following:
 
 ```
-git clone https://github.com/EmilyAlsentzer/rare-disease-simulation
-cd rare-disease-simulation
 pip install -e .
 ```
 
@@ -59,7 +64,8 @@ pip install -e .
 Before you run any code in the repository, you will need to (1) download the required data and (2) specify the path to the project directory.
 
 ### Download Data
-First, download the data from Harvard Dataverse
+The data is hosted on [Harvard Dataverse]() with the persistent identifier: TODO. To maintain the directory structure while downloading the files, make sure to select all files and download in the original format. The entire dataset is approximately 3GB when zipped. Note that if you only wish to download the already generated simulated patients, you can directly download `simulated_patients_formatted.jsonl`.
+
 
 ### Setting up config file
 Go to `config.py` and set the project directory (`PROJECT_ROOT`) to be the path to the data folder downloaded in the previous step. 
@@ -170,4 +176,12 @@ This project is covered under the MIT License.
 
 ## Questions
 For questions, please leave a Github issue or contact Emily Alsentzer at emilya@mit.edu.
+
+
+
+
+
+
+
+
 
