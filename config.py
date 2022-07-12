@@ -1,6 +1,6 @@
 from pathlib import Path
 
-PROJECT_ROOT = Path('/home/ema30/zaklab/udn_data/data') # Change this to be the path to the data directory downloaded from Harvard Dataverse
+PROJECT_ROOT = Path('/Users/emilyalsentzer/Documents/Documents_EmilysMacBookPro/projects/udn/dataverse_files') # Change this to be the path to the data directory downloaded from Harvard Dataverse
 
 #PROJECT_ROOT = Path('/PATH/TO/DATA/DOWNLOAD') # Change this to be the path to the data directory downloaded from Harvard Dataverse
 
@@ -29,7 +29,7 @@ NCBI_PATH = Path(PROJECT_ROOT / 'preprocess'/  'ncbi')
 
 ############
 # PARAMETERS FOR SIMULATING PATIENTS
-PATIENTS_PER_DISEASE = 20 # Number of patients to simulate per Orphanet Disease
+PATIENTS_PER_DISEASE = 1 # Number of patients to simulate per Orphanet Disease #NOTE: We use 20 for the manuscript. Changed to 1 here to speed up the code
 N_DISTRACTORS_LAMBDA = 13 
 PROB_DROPOUT_POS = 0.2  
 PROB_DROPOUT_NEG = 0.9

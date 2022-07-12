@@ -62,7 +62,7 @@ def find_correct_genes(filename, patients, gene_rankings, category, category_typ
         gene_scores_orig = gene_rankings[patient_id]
         
         if 'phenomizer' in str(filename):
-            if len(gene_scores[0]) == 3:
+            if len(gene_scores_orig[0]) == 3:
                 gene_scores = [(pval, score, 'ENSG00000003989') if gene == 'SLC7A2-IT1' else (pval, score, gene) for pval, score, gene in gene_scores_orig]
 
                 ranked_genes = rankdata([score * -1 for pval, score, gene in gene_scores], method='average')

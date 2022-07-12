@@ -15,7 +15,7 @@ import seaborn as sns
 import sys
 
 import config
-from create_dataset_for_baselines import read_jsonl
+from simulation_pipeline.label_patients_with_novelty_categories import read_jsonl
 
 '''
 We want to be able to measure the contribution of each component of the simulation pipeline. 
