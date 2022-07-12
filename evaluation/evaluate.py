@@ -132,10 +132,10 @@ def main():
         plot_labels = plot_labels + [args.results_name]
 
     # Evaluate all patients together 
-    sim_all_results_dict = evaluate_all_methods(filenames, sim_base_fname, patients, is_udn=False , plot_labels=plot_labels) 
+    all_results_dict = evaluate_all_methods(filenames, sim_base_fname, patients, is_udn=False , plot_labels=plot_labels) 
     
     # Evaluate each category separately
-    sim_all_results_dict_all_cat = evaluate_all_methods_all_categories(filenames, sim_base_fname, patient_broad_categories_dict, category_type='broad', is_udn=False, plot_labels=plot_labels) 
+    all_results_dict_all_cat = evaluate_all_methods_all_categories(filenames, sim_base_fname, patient_broad_categories_dict, category_type='broad', is_udn=False, plot_labels=plot_labels) 
     
         
 if __name__ == "__main__":
