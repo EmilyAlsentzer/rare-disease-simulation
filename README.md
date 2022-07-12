@@ -48,11 +48,6 @@ conda env create -f environment.yml
 conda activate rare-dx-env
 ```
 
-Alternatively, to install via pip, run:
-```
-pip install -r requirements.txt
-```
-
 ### Install the Repo
 After the conda environment is created and activated, install the github repo with the following:
 
@@ -162,7 +157,7 @@ python evaluate_ablations.py \
 ```
 
 ## Additional Resources
-- In order to perform the time-stamped evaluation, we manually time-stampd each disease and disease–gene association in Orphanet according to the date of the Pubmed article that reported the discovery. We release these annotations publicly to the community in the data download in the Harvard Dataverse.
+- In order to perform the time-stamped evaluation, we manually time-stamped each disease and disease–gene association in Orphanet according to the date of the Pubmed article that reported the discovery. We release these annotations publicly to the community in the data download in the Harvard Dataverse.
 - We also provide our preprocessing code that we used to (1) preprocess all orphanet data and (2) convert all genes to Ensembl IDs and update all HPO terms to the 2019 Human Phenotype Ontology. These preprocessing scripts can be found in the `process_simulation_resources` folder, but we also provide the already processed data in the data download.
 
 ## License
