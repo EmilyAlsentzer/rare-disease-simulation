@@ -11,7 +11,7 @@ import sys
 
 import config
 from eval_plots import *
-from simulate_patients.utils.util import read_simulated_patients
+from simulation_pipeline.utils.util import read_simulated_patients
 from evaluate_util import *
 
 RESULTS_DIR = config.PROJECT_ROOT / 'gene_prioritization_results'
@@ -38,7 +38,7 @@ def evaluate_all_methods(filenames, output_base_fname, patients, category_type='
         v['name'] = str(k).replace('simulated/simulated_patients_formatted', '')
     all_results_df = pd.DataFrame([v for k,v in all_results_dict.items()])
     all_results_df = all_results_df.round(3).set_index('name')
-    print(all_results_df)
+    print(all_results_df.drop(columns=['ranks']))
     return all_results_dict
 
 def evaluate_all_methods_all_categories(filenames, output_base_fname, category_dict, category_type, is_udn=False, plot_labels=None):
@@ -63,7 +63,7 @@ def evaluate_all_methods_all_categories(filenames, output_base_fname, category_d
         
         all_results_df = pd.DataFrame([v for k,v in all_results_dict.items()])
         all_results_df = all_results_df.round(3).set_index('name')
-        print(all_results_df)
+        print(all_results_df.drop(columns=['ranks']))
         all_results_df.to_csv(RESULTS_DIR / f'{category}_all_model_results.csv')
         all_categories_results_dict[category] = all_results_dict
 
