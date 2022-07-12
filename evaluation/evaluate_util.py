@@ -59,10 +59,12 @@ def find_correct_genes(filename, patients, gene_rankings, category, category_typ
         
 
         assert patient_id in gene_rankings, f'patient {patient_id} \'s genes, (correct={correct_genes}) were not ranked'
-        gene_scores = gene_rankings[patient_id]
+        gene_scores_orig = gene_rankings[patient_id]
         
         if 'phenomizer' in str(filename):
             if len(gene_scores[0]) == 3:
+                gene_scores = [(pval, score, 'ENSG00000003989') if gene == 'SLC7A2-IT1' else (pval, score, gene) for pval, score, gene in gene_scores_orig]
+
                 ranked_genes = rankdata([score * -1 for pval, score, gene in gene_scores], method='average')
                 pvals = [pval for pval, score, gene in gene_scores]
                 rank_pval_added = ranked_genes + pvals
@@ -70,6 +72,7 @@ def find_correct_genes(filename, patients, gene_rankings, category, category_typ
                 ranks = [rank for rank, (pval, score, gene) in zip(reranked_genes, gene_scores) if gene in correct_genes]
                 correct_gene_bool = [1 if gene in correct_genes else 0 for pval, score, gene in gene_scores]
             else:
+                gene_scores = [(pval, score, 'ENSG00000003989', disease) if gene == 'SLC7A2-IT1' else (pval, score, gene, disease) for pval, score, gene, disease in gene_scores_orig]
                 ranked_genes = rankdata([score * -1 for pval, score, gene, disease in gene_scores], method='average')
                 pvals = [pval for pval, score, gene, disease in gene_scores]
                 rank_pval_added = ranked_genes + pvals
@@ -78,6 +81,17 @@ def find_correct_genes(filename, patients, gene_rankings, category, category_typ
                 correct_gene_bool = [1 if gene in correct_genes else 0 for pval, score, gene, disease in gene_scores]
 
         else:
+            # Remove genes that might have received two scores
+            # This occurs in phenolyzer because two gene names mapped to the same ensembl ID. We take the best score.
+            gene_scores_orig = sorted(gene_scores_orig, key=lambda x: x[0])
+            seen = set()
+            gene_scores = []
+            for scores in gene_scores_orig:
+                gene_score, gene = scores
+                if gene not in seen:
+                    gene_scores.append((gene_score, gene))
+                    seen.add(gene)
+
             ranked_genes = rankdata([score * -1 for score, gene in gene_scores], method='average')
             ranks = [rank for rank, (score, gene) in zip(ranked_genes, gene_scores) if gene in correct_genes]
         
@@ -129,6 +143,7 @@ def evaluate(filename, gene_rankings, patients, category, category_type, eval_ty
     results_dict['top_3_acc'] = top_k_accuracy(ranks, 3)
     results_dict['top_5_acc'] = top_k_accuracy(ranks, 5)
     results_dict['top_10_acc'] = top_k_accuracy(ranks, 10)
+    results_dict['ranks'] = ranks
 
     return results_dict
 

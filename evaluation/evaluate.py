@@ -6,7 +6,7 @@ from pathlib import Path
 from collections import defaultdict, OrderedDict, Counter
 import matplotlib.pyplot as plt
 plt.switch_backend('agg')
-from scipy.stats import rankdata
+from scipy.stats import rankdata, wilcoxon
 import sys
 
 import config
@@ -66,6 +66,24 @@ def evaluate_all_methods_all_categories(filenames, output_base_fname, category_d
         print(all_results_df)
         all_results_df.to_csv(RESULTS_DIR / f'{category}_all_model_results.csv')
         all_categories_results_dict[category] = all_results_dict
+
+        # calculate p-values
+        for name_1, results_1 in all_results_dict.items():
+            for name_2, results_2 in all_results_dict.items():
+                if name_1 != name_2:
+                    print(name_1, name_2)
+                    assert len(results_1['ranks']) == len(results_2['ranks'])
+                   
+                    if results_1['ranks'] == results_2['ranks']:
+                        print(f'Ranks for {name_1} and {name_2} are identical.')
+                    else:
+                        wilcoxon_test_greater = wilcoxon(results_1['ranks'], results_2['ranks'], alternative='greater')
+                        wilcoxon_test_less = wilcoxon(results_1['ranks'], results_2['ranks'], alternative='less')
+                        wilcoxon_test_two_sided = wilcoxon(results_1['ranks'], results_2['ranks'])
+
+                        print('wilcoxon greater', wilcoxon_test_greater)
+                        print('wilcoxon less', wilcoxon_test_less)
+                        print('wilcoxon two-sided',wilcoxon_test_two_sided)
 
 
     # Plot results for all categories
