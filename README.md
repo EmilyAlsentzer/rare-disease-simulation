@@ -59,7 +59,7 @@ pip install -e .
 Before you run any code in the repository, you will need to (1) download the required data and (2) specify the path to the project directory.
 
 ### Download Data
-The data is hosted on [Harvard Dataverse]() with the persistent identifier: TODO. To maintain the directory structure while downloading the files, make sure to select all files and download in the original format. The entire dataset is approximately 3GB when zipped. Note that if you only wish to download the already generated simulated patients, you can directly download `simulated_patients_formatted.jsonl`.
+The data is hosted on [Harvard Dataverse](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/ANFOR3) with the persistent identifier: https://doi.org/10.7910/DVN/ANFOR3. To maintain the directory structure while downloading the files, make sure to select all files and download in the original format. The entire dataset is approximately 3GB when zipped. Note that if you only wish to download the already generated simulated patients, you can directly download `simulated_patients_formatted.jsonl`.
 
 
 ### Setting up config file
