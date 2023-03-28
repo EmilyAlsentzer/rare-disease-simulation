@@ -1,8 +1,6 @@
 from pathlib import Path
 
-PROJECT_ROOT = Path('/Users/emilyalsentzer/Documents/Documents_EmilysMacBookPro/projects/udn/dataverse_files') # Change this to be the path to the data directory downloaded from Harvard Dataverse
-
-#PROJECT_ROOT = Path('/PATH/TO/DATA/DOWNLOAD') # Change this to be the path to the data directory downloaded from Harvard Dataverse
+PROJECT_ROOT = Path('/PATH/TO/DATA/DOWNLOAD') # Change this to be the path to the data directory downloaded from Harvard Dataverse
 
 SIMULATED_DATA_PATH = PROJECT_ROOT / 'simulated_patients' # path to simulated patients
 KNOWLEDGE_GRAPH_PATH = PROJECT_ROOT / 'knowledge_graph' # path to knowledge graph
