@@ -1,9 +1,10 @@
 # Simulation of undiagnosed patients with novel genetic conditions
 
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
-[![GitHub Repo stars](https://img.shields.io/github/stars/EmilyAlsentzer/rare-disease-simulation)](https://github.com/EmilyAlsentzer/rare-disease-simulation/stargazers)
-[![GitHub Repo forks](https://img.shields.io/github/forks/EmilyAlsentzer/rare-disease-simulation)](https://github.com/EmilyAlsentzer/rare-disease-simulation/network/members)
- [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+
+<!-- [![GitHub Repo stars](https://img.shields.io/github/stars/EmilyAlsentzer/rare-disease-simulation)](https://github.com/EmilyAlsentzer/rare-disease-simulation/stargazers)
+[![GitHub Repo forks](https://img.shields.io/github/forks/EmilyAlsentzer/rare-disease-simulation)](https://github.com/EmilyAlsentzer/rare-disease-simulation/network/members) -->
 
 ## Overview
 We present a computational pipeline to simulate realistic undiagnosed rare disease patients that can be used to evaluate gene prioritization tools. Each simulated patient is represented by sets of candidate disease-causing genes and standardized phenotype terms. 
@@ -48,11 +49,6 @@ conda env create -f environment.yml
 conda activate rare-dx-env
 ```
 
-Alternatively, to install via pip, run:
-```
-pip install -r requirements.txt
-```
-
 ### Install the Repo
 After the conda environment is created and activated, install the github repo with the following:
 
@@ -64,7 +60,7 @@ pip install -e .
 Before you run any code in the repository, you will need to (1) download the required data and (2) specify the path to the project directory.
 
 ### Download Data
-The data is hosted on [Harvard Dataverse]() with the persistent identifier: TODO. To maintain the directory structure while downloading the files, make sure to select all files and download in the original format. The entire dataset is approximately 3GB when zipped. Note that if you only wish to download the already generated simulated patients, you can directly download `simulated_patients_formatted.jsonl`.
+The data is hosted on [Harvard Dataverse](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/ANFOR3) with the persistent identifier: https://doi.org/10.7910/DVN/ANFOR3. To maintain the directory structure while downloading the files, make sure to select all files and download in the original format. The entire dataset is approximately 3GB when zipped. Note that if you only wish to download the already generated simulated patients, you can directly download `simulated_patients_formatted.jsonl`.
 
 
 ### Setting up config file
@@ -162,7 +158,7 @@ python evaluate_ablations.py \
 ```
 
 ## Additional Resources
-- In order to perform the time-stamped evaluation, we manually time-stampd each disease and disease–gene association in Orphanet according to the date of the Pubmed article that reported the discovery. We release these annotations publicly to the community in the data download in the Harvard Dataverse.
+- In order to perform the time-stamped evaluation, we manually time-stamped each disease and disease–gene association in Orphanet according to the date of the Pubmed article that reported the discovery. We release these annotations publicly to the community in the data download in the Harvard Dataverse.
 - We also provide our preprocessing code that we used to (1) preprocess all orphanet data and (2) convert all genes to Ensembl IDs and update all HPO terms to the 2019 Human Phenotype Ontology. These preprocessing scripts can be found in the `process_simulation_resources` folder, but we also provide the already processed data in the data download.
 
 ## License
