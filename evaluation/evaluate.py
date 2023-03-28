@@ -11,7 +11,7 @@ import sys
 
 import config
 from eval_plots import *
-from simulate_patients.utils.util import read_simulated_patients
+from simulation_pipeline.utils.util import read_simulated_patients
 from evaluate_util import *
 
 RESULTS_DIR = config.PROJECT_ROOT / 'gene_prioritization_results'
@@ -33,12 +33,14 @@ def evaluate_all_methods(filenames, output_base_fname, patients, category_type='
         all_results_dict[run_name] = evaluate(filename, gene_rankings, patients, category, category_type)
 
     fname = str(RESULTS_DIR / (output_base_fname + '_' + category + '.png'))
-    plot_top_k_acc(all_results_dict, fname, is_udn, plot_labels)   
     for k,v in all_results_dict.items():
         v['name'] = str(k).replace('simulated/simulated_patients_formatted', '')
     all_results_df = pd.DataFrame([v for k,v in all_results_dict.items()])
     all_results_df = all_results_df.round(3).set_index('name')
-    print(all_results_df)
+    print(all_results_df.drop(columns=['ranks']))
+
+    plot_top_k_acc(all_results_dict, fname, is_udn, plot_labels)   
+
     return all_results_dict
 
 def evaluate_all_methods_all_categories(filenames, output_base_fname, category_dict, category_type, is_udn=False, plot_labels=None):
@@ -63,7 +65,7 @@ def evaluate_all_methods_all_categories(filenames, output_base_fname, category_d
         
         all_results_df = pd.DataFrame([v for k,v in all_results_dict.items()])
         all_results_df = all_results_df.round(3).set_index('name')
-        print(all_results_df)
+        print(all_results_df.drop(columns=['ranks']))
         all_results_df.to_csv(RESULTS_DIR / f'{category}_all_model_results.csv')
         all_categories_results_dict[category] = all_results_dict
 
@@ -72,7 +74,7 @@ def evaluate_all_methods_all_categories(filenames, output_base_fname, category_d
             for name_2, results_2 in all_results_dict.items():
                 if name_1 != name_2:
                     print(name_1, name_2)
-                    assert len(results_1['ranks']) == len(results_2['ranks'])
+                    assert len(results_1['ranks']) == len(results_2['ranks']), f"{len(results_1['ranks'])}, {len(results_2['ranks'])}"
                    
                     if results_1['ranks'] == results_2['ranks']:
                         print(f'Ranks for {name_1} and {name_2} are identical.')
@@ -96,6 +98,12 @@ def evaluate_all_methods_all_categories(filenames, output_base_fname, category_d
 ####################################################
 # Main
 
+'''
+python evaluation/evaluate.py \
+--patients simulated_patients_formatted.jsonl \
+--reproduce_paper_results
+'''
+
 def main():
     plt.style.use('ggplot')
 
@@ -111,16 +119,24 @@ def main():
     # Read in simulated patients
     patients = read_simulated_patients(config.SIMULATED_DATA_PATH / args.patients)
     patient_categories_dict, patient_broad_categories_dict = categorize_patients(patients) 
-    sim_base_fname = args.patients.split('.jsonl')[0]
+    base_fname = args.patients.split('.jsonl')[0]
 
     if args.reproduce_paper_results:
         filenames = [
-            RESULTS_DIR / 'phrank' / (sim_base_fname + '_phrank_rankgenes_directly=True.pkl'), 
-            RESULTS_DIR / 'phrank' / (sim_base_fname + '_phrank_rankgenes_directly=False.pkl'),
-            RESULTS_DIR / 'phenomizer' / (sim_base_fname + '.pkl'),
-            RESULTS_DIR / 'phenolyzer' / (sim_base_fname + '.pkl'),
-            RESULTS_DIR / 'random' / (sim_base_fname + '_random_baseline.pkl')
+            RESULTS_DIR / 'phrank' / (base_fname + '_phrank_rankgenes_directly=True.pkl'), 
+            RESULTS_DIR / 'phrank' / (base_fname + '_phrank_rankgenes_directly=False.pkl'),
+            RESULTS_DIR / 'phenomizer' / (base_fname + '.pkl'),
+            RESULTS_DIR / 'phenolyzer' / (base_fname + '.pkl'),
+            RESULTS_DIR / 'random' / (base_fname + '_random_baseline.pkl')
         ] 
+
+        # filenames = [
+        #         config.PROJECT_ROOT / 'phrank' / 'simulated' / (base_fname + '_phrank_rankgenes_directly=True.pkl'), 
+        #         config.PROJECT_ROOT / 'phrank' / 'simulated' / (base_fname + '_phrank_rankgenes_directly=False.pkl'),
+        #         config.PROJECT_ROOT / 'phenomizer' / 'results' / (base_fname + '_1000.pkl'),
+        #         config.PROJECT_ROOT / 'phenolyzer'  / 'results' / (base_fname + '_rank_dict.pkl'),
+        #         config.PROJECT_ROOT / 'random' / (base_fname + '_random_baseline.pkl')
+        # ] 
         plot_labels = ['Phrank \nPatient-Gene', 'Phrank \nPatient-Disease', 'Phenomizer', 'Phenolyzer', 'Random']
     else:
         filenames = []
@@ -132,11 +148,10 @@ def main():
         plot_labels = plot_labels + [args.results_name]
 
     # Evaluate all patients together 
-    sim_all_results_dict = evaluate_all_methods(filenames, sim_base_fname, patients, is_udn=False , plot_labels=plot_labels) 
+    all_results_dict = evaluate_all_methods(filenames, base_fname, patients, is_udn=False, plot_labels=plot_labels) 
     
     # Evaluate each category separately
-    sim_all_results_dict_all_cat = evaluate_all_methods_all_categories(filenames, sim_base_fname, patient_broad_categories_dict, category_type='broad', is_udn=False, plot_labels=plot_labels) 
+    all_results_dict_all_cat = evaluate_all_methods_all_categories(filenames, base_fname, patient_broad_categories_dict, category_type='broad', is_udn=False, plot_labels=plot_labels) 
     
-        
 if __name__ == "__main__":
     main()
