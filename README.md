@@ -167,7 +167,7 @@ python evaluate_ablations.py \
 This project is covered under the MIT License.
 
 ## Questions
-For questions, please leave a Github issue or contact Emily Alsentzer at emilya@mit.edu.
+For questions, please leave a Github issue or contact Emily Alsentzer at ealsentzer@bwh.harvard.edu.
 
 
 
