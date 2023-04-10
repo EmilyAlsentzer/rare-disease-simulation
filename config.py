@@ -6,6 +6,7 @@ SIMULATED_DATA_PATH = PROJECT_ROOT / 'simulated_patients' # path to simulated pa
 KNOWLEDGE_GRAPH_PATH = PROJECT_ROOT / 'knowledge_graph' # path to knowledge graph
 UDN_PATH = PROJECT_ROOT / 'processed_udn'
 SIMULATOR_DIR = PROJECT_ROOT / 'simulation_resources' / 'simulator_preprocess'
+GENERATED_VCF_PATH = PROJECT_ROOT / 'generated_vcfs'
 
 ############
 # SIMULATION SOURCES

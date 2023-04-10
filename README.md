@@ -126,6 +126,8 @@ To run both versions of the Phrank algorithm:
 sh gene_prioritization_algorithms/run_phrank.sh
 ```
 
+If you would like to evaluate the simulated patients on algorithms that require VCFs as input, you can leverage the script `create_vcfs.py` in the `create_vcfs` folder to sample a  variant for each candidate gene and construct a VCF.
+
 ### :four: Evaluate model performance on the simulated patients
 The evaluation script assumes that the gene prioritization results are saved as a pickle file containing a dict mapping from `patient id` to a list of tuples where each tuple contains `(gene_score, candidate_gene_name)`.
 
@@ -165,7 +167,7 @@ python evaluate_ablations.py \
 This project is covered under the MIT License.
 
 ## Questions
-For questions, please leave a Github issue or contact Emily Alsentzer at emilya@mit.edu.
+For questions, please leave a Github issue or contact Emily Alsentzer at ealsentzer@bwh.harvard.edu.
 
 
 
