@@ -48,6 +48,7 @@ This codebase leverages Python and many associated packages. To create a conda e
 conda env create -f environment.yml
 conda activate rare-dx-env
 ```
+This process should take no more than a few minutes. Note that this has been tested on linux software.
 
 ### Install the Repo
 After the conda environment is created and activated, install the github repo with the following:
