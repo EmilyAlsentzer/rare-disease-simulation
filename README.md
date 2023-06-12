@@ -32,7 +32,12 @@ We present a computational pipeline to simulate realistic undiagnosed rare disea
 
 
 ## Download Simulated Patients
-You can directly download the patients that we simulated to be similar to real patients in the Undiagnosed Diseases Network (UDN). The direct download link is here. Below are details about how the simulated patients compare to the UDN patients.
+You can directly download the patients that we simulated to be similar to real patients in the Undiagnosed Diseases Network (UDN). The direct download link is [here](https://dataverse.harvard.edu/file.xhtml?fileId=6374382&version=2.0). Below are statistics comparing the simulated patients to the UDN patients.
+
+<p align="center">
+ <img src="https://github.com/EmilyAlsentzer/rare-disease-simulation/blob/main/img/figure3_realvssim.png?raw=true" width="600" >
+</p>
+
 
 
 
