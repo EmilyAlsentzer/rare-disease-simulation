@@ -7,7 +7,7 @@
 [![GitHub Repo forks](https://img.shields.io/github/forks/EmilyAlsentzer/rare-disease-simulation)](https://github.com/EmilyAlsentzer/rare-disease-simulation/network/members) -->
 
 ## Overview
-We present a computational pipeline to simulate realistic undiagnosed rare disease patients that can be used to evaluate gene prioritization tools. Each simulated patient is represented by sets of candidate disease-causing genes and standardized phenotype terms. 
+We present a computational pipeline to simulate realistic undiagnosed rare disease patients that can be used to evaluate gene prioritization tools. Each simulated patient is represented by sets of candidate disease-causing genes and standardized phenotype terms. We also provide a direct link to download the simulation patients we created using this pipeline.
 
 ### Pipeline Featues
 - :sparkles:  **Realistic simulation of patient phenotypes and candidate genes:** We provide a taxonomy of categories of “distractor” genes that do not cause the patient’s presenting syndrome yet would be considered plausible candidates during the clinical process. We then introduce a simulation framework that jointly samples genes and phenotypes according to these categories to simulate nontrivial and realistic patients. 
@@ -29,6 +29,10 @@ We present a computational pipeline to simulate realistic undiagnosed rare disea
 ### Ways to use this simulation pipeline
 - **Probing Gene Prioritization Models:** We provide our framework and simulated patients as a public resource to enable developers to internally validate and improve their tools by separately evaluating on simulated patients across novelty categories and distractor gene categories. 
 - **Training Machine-Learning based Gene Prioritization Models:** We also expect that our dataset of simulated patients that span diverse genetic disorders and reflect realistic clinical processes and imprecision can serve as invaluable training data for machine learning models for rare disease diagnosis.
+
+
+## Download Simulated Patients
+You can directly download the patients that we simulated to be similar to real patients in the Undiagnosed Diseases Network (UDN). The direct download link is here. Below are details about how the simulated patients compare to the UDN patients.
 
 
 
