@@ -2,6 +2,8 @@
 
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![DOI](https://zenodo.org/badge/480945882.svg)](https://zenodo.org/badge/latestdoi/480945882)
+
 
 <!-- [![GitHub Repo stars](https://img.shields.io/github/stars/EmilyAlsentzer/rare-disease-simulation)](https://github.com/EmilyAlsentzer/rare-disease-simulation/stargazers)
 [![GitHub Repo forks](https://img.shields.io/github/forks/EmilyAlsentzer/rare-disease-simulation)](https://github.com/EmilyAlsentzer/rare-disease-simulation/network/members) -->
